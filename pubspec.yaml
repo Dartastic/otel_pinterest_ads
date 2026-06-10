@@ -1,6 +1,6 @@
 name: otel_pinterest_ads
 description: "Dartastic OpenTelemetry bridge for Pinterest Ads (campaigns, ad groups, shopping objective, spend)."
-version: 0.1.0-beta.2-wip
+version: 0.1.0-beta.2
 repository: https://github.com/dartastic/otel_pinterest_ads
 homepage: https://dartastic.io
 publish_to: https://pub.dartastic.io
