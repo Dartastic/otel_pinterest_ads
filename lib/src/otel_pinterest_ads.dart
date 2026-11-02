@@ -1,15 +1,16 @@
-// Licensed under the Dartastic Pro Software License Agreement.
+// Licensed under the Apache License, Version 2.0
 // Copyright 2025-2026 Mindful Software LLC d/b/a Dartastic.io, All rights reserved.
 
-import 'package:dartastic_opentelemetry/dartastic_opentelemetry.dart';
+import 'package:dartastic_opentelemetry_api/dartastic_opentelemetry_api.dart';
 
 import 'otel_pinterest_ads_suppression.dart';
 
 const _tracerName = 'dartastic_otel_libs_pinterest_ads';
 
-Tracer _tracer() => OTel.tracerProvider().getTracer(_tracerName);
+APITracer _tracer() => OTelAPI.tracerProvider().getTracer(_tracerName);
 
 class PinterestAdsResult {
+  /// Creates a result.
   const PinterestAdsResult({
     this.advertiserId,
     this.campaignId,
@@ -73,8 +74,13 @@ class PinterestAdsResult {
   final int? statusCode;
 }
 
+/// What a traced call returned: the value for the caller plus fields
+/// recorded on the span.
 class PinterestAdsCallResult<T> {
+  /// Creates a call result.
   const PinterestAdsCallResult({required this.value, this.result});
+
+  /// The value returned to the caller.
   final T value;
   final PinterestAdsResult? result;
 }
@@ -99,122 +105,122 @@ Future<T> tracedPinterestAds<T>({
   final span = _tracer().startSpan(
     'pinterest_ads $operation',
     kind: SpanKind.client,
-    attributes: OTel.attributesFromMap(m),
+    attributes: OTelAPI.attributesFromMap(m),
   );
   try {
     final r = await invoke();
     if (r.result != null) {
       final extras = <Attribute<Object>>[];
       if (r.result!.advertiserId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'pinterest_ads.advertiser.id',
           r.result!.advertiserId!,
         ));
       }
       if (r.result!.campaignId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'pinterest_ads.campaign.id',
           r.result!.campaignId!,
         ));
       }
       if (r.result!.adGroupId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'pinterest_ads.ad_group.id',
           r.result!.adGroupId!,
         ));
       }
       if (r.result!.adId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'pinterest_ads.ad.id',
           r.result!.adId!,
         ));
       }
       if (r.result!.pinId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'pinterest_ads.pin.id',
           r.result!.pinId!,
         ));
       }
       if (r.result!.objectiveType != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'pinterest_ads.objective.type',
           r.result!.objectiveType!,
         ));
       }
       if (r.result!.optimizationGoal != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'pinterest_ads.optimization.goal',
           r.result!.optimizationGoal!,
         ));
       }
       if (r.result!.creativeType != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'pinterest_ads.creative.type',
           r.result!.creativeType!,
         ));
       }
       if (r.result!.entityStatus != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'pinterest_ads.entity.status',
           r.result!.entityStatus!,
         ));
       }
       if (r.result!.catalogId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'pinterest_ads.catalog.id',
           r.result!.catalogId!,
         ));
       }
       if (r.result!.spendMicros != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'pinterest_ads.spend.micros',
           r.result!.spendMicros!,
         ));
       }
       if (r.result!.currencyCode != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'pinterest_ads.currency.code',
           r.result!.currencyCode!,
         ));
       }
       if (r.result!.impressions != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'pinterest_ads.impressions',
           r.result!.impressions!,
         ));
       }
       if (r.result!.clicks != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'pinterest_ads.clicks',
           r.result!.clicks!,
         ));
       }
       if (r.result!.saves != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'pinterest_ads.saves',
           r.result!.saves!,
         ));
       }
       if (r.result!.outboundClicks != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'pinterest_ads.outbound_clicks',
           r.result!.outboundClicks!,
         ));
       }
       if (r.result!.checkouts != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'pinterest_ads.checkouts',
           r.result!.checkouts!,
         ));
       }
       if (r.result!.conversions != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'pinterest_ads.conversions',
           r.result!.conversions!,
         ));
       }
       if (r.result!.statusCode != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'http.response.status_code',
           r.result!.statusCode!,
         ));
@@ -225,13 +231,13 @@ Future<T> tracedPinterestAds<T>({
           );
         }
       }
-      if (extras.isNotEmpty) span.addAttributes(OTel.attributes(extras));
+      if (extras.isNotEmpty) span.addAttributes(OTelAPI.attributes(extras));
     }
     return r.value;
   } catch (e, st) {
-    span.addAttributes(OTel.attributes([
-      OTel.attributeString(
-        ErrorResource.errorType.key,
+    span.addAttributes(OTelAPI.attributes([
+      OTelAPI.attributeString(
+        ErrorAttributes.errorType.key,
         e.runtimeType.toString(),
       ),
     ]));
